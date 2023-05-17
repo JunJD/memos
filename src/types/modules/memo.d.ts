@@ -5,7 +5,7 @@ type Visibility = "PUBLIC" | "PROTECTED" | "PRIVATE";
 interface Memo {
   id: MemoId;
 
-  creatorId: UserId;
+  creatorId: User;
   createdTs: TimeStamp;
   updatedTs: TimeStamp;
   rowStatus: RowStatus;

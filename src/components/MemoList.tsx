@@ -25,7 +25,6 @@ const MemoList = () => {
   const { tag: tagQuery, duration, type: memoType, text: textQuery, shortcutId, visibility } = filter;
   const shortcut = shortcutId ? shortcutStore.getShortcutById(shortcutId) : null;
   const showMemoFilter = Boolean(tagQuery || (duration && duration.from < duration.to) || memoType || textQuery || shortcut || visibility);
-
   const shownMemos = (
     showMemoFilter || shortcut
       ? memos.filter((memo) => {
@@ -77,17 +76,18 @@ const MemoList = () => {
           return shouldShow;
         })
       : memos
-  ).filter((memo) => memo.creatorId === currentUserId);
-
+  ).filter((memo) => {
+    return memo.creatorId.id === currentUserId;
+  });
   const pinnedMemos = shownMemos.filter((m) => m.pinned);
   const unpinnedMemos = shownMemos.filter((m) => !m.pinned);
+
   const memoSort = (mi: Memo, mj: Memo) => {
     return mj.createdTs - mi.createdTs;
   };
   pinnedMemos.sort(memoSort);
   unpinnedMemos.sort(memoSort);
   const sortedMemos = pinnedMemos.concat(unpinnedMemos).filter((m) => m.rowStatus === "NORMAL");
-
   const statusRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ const MemoList = () => {
     };
   }, []);
 
-  const handleCopy = (event: ClipboardEvent) => {
+  const handleCopy = (event: Event) => {
     event.preventDefault();
     const rawStr = document.getSelection()?.toString();
     if (rawStr !== undefined) {

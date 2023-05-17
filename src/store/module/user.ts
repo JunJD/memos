@@ -8,7 +8,7 @@ import { setAppearance, setLocale } from "../reducer/global";
 import { setUser, patchUser, setHost, setUserById } from "../reducer/user";
 
 const defaultSetting: Setting = {
-  locale: "en",
+  locale: "zh-Hans",
   appearance: getSystemColorScheme(),
   memoVisibility: "PRIVATE",
 };
@@ -46,7 +46,7 @@ export const convertResponseModelUser = (user: User): User => {
 
 export const initialUserState = async () => {
   const { systemStatus } = store.getState().global;
-
+  console.log("initialUserState", systemStatus);
   if (systemStatus.host) {
     store.dispatch(setHost(convertResponseModelUser(systemStatus.host)));
   }
@@ -75,6 +75,7 @@ const getUserIdFromPath = () => {
 };
 
 const doSignIn = async (openId: string) => {
+  console.log("doSignIn", openId);
   const { data: user } = (await api.getMyselfUser(openId)).data;
   if (user) {
     console.log("doSignIn", user);

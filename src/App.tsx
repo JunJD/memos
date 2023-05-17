@@ -14,7 +14,7 @@ const App = () => {
   const globalStore = useGlobalStore();
   const { mode, setMode } = useColorScheme();
   const { appearance, locale, systemStatus } = globalStore.state;
-
+  console.log("App render", "locale", locale);
   useEffect(() => {
     const darkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleColorSchemeChange = (e: MediaQueryListEvent) => {
@@ -57,6 +57,7 @@ const App = () => {
 
   useEffect(() => {
     document.documentElement.setAttribute("lang", locale);
+    console.log(locale, "locale!!!!");
     i18n.changeLanguage(locale);
     storage.set({
       locale: locale,

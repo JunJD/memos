@@ -24,6 +24,7 @@ const initialGlobalStateLoader = (() => {
     }
     done = true;
     try {
+      console.log("初始化状态🎁🎁🎁");
       await initialGlobalState();
     } catch (error) {
       // do nth
@@ -121,6 +122,7 @@ const router = createBrowserRouter([
           }
 
           const { host } = store.getState().user;
+          console.log("host", store.getState().user);
           if (isNullorUndefined(host)) {
             return redirect("/auth");
           }

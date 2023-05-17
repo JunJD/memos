@@ -24,7 +24,7 @@ const Auth = () => {
 
   useEffect(() => {
     console.log("Auth Page Mounted✔");
-    // userStore.doSignOut().catch();
+    userStore.doSignOut().catch();
     // const fetchIdentityProviderList = async () => {
     //   const {
     //     data: { data: identityProviderList },
@@ -73,7 +73,8 @@ const Auth = () => {
     try {
       actionBtnLoadingState.setLoading();
       const res = await api.signin(username, password);
-      const user = await userStore.doSignIn(res.data.data.openId);
+      console.log(res, "res");
+      const user = await userStore.doSignIn(res.data.data.user.openId);
       if (user) {
         window.location.href = "/";
       } else {
@@ -98,8 +99,7 @@ const Auth = () => {
     try {
       actionBtnLoadingState.setLoading();
       const res = await api.signup(username, password);
-      console.log(res, "res");
-      const user = await userStore.doSignIn(res.data.data.openId);
+      const user = await userStore.doSignIn(res.data.data.user.openId);
       if (user) {
         window.location.href = "/";
       } else {

@@ -7,7 +7,7 @@ import { setAppearance, setGlobalState, setLocale } from "../reducer/global";
 
 export const initialGlobalState = async () => {
   const defaultGlobalState = {
-    locale: "en" as Locale,
+    locale: "zh-Hans" as Locale,
     appearance: "system" as Appearance,
     systemStatus: {
       allowSignUp: false,
@@ -20,7 +20,7 @@ export const initialGlobalState = async () => {
         name: "memos",
         logoUrl: "/logo.webp",
         description: "",
-        locale: "en",
+        locale: "zh-Hans",
         appearance: "system",
         externalUrl: "",
       },
@@ -36,22 +36,26 @@ export const initialGlobalState = async () => {
   }
 
   const { data } = (await api.getSystemStatus()).data;
+  console.log("data", data);
   if (data) {
-    const customizedProfile = data.customizedProfile;
+    const customizedProfile = data.profile;
+    console.log("初始化的状态0==>✨✨✨", defaultGlobalState, customizedProfile);
     defaultGlobalState.systemStatus = {
       ...data,
       customizedProfile: {
-        name: customizedProfile.name || "memos",
-        logoUrl: customizedProfile.logoUrl || "/logo.webp",
-        description: customizedProfile.description,
-        locale: customizedProfile.locale || "en",
-        appearance: customizedProfile.appearance || "system",
+        name: "memos",
+        logoUrl: "/logo.webp",
+        description: "",
+        locale: "zh-Hans",
+        appearance: "system",
         externalUrl: "",
       },
     };
+    console.log("初始化的状态1==>✨✨✨", defaultGlobalState);
     defaultGlobalState.locale = storageLocale || findNearestLanguageMatch(i18n.language);
     defaultGlobalState.appearance = customizedProfile.appearance;
   }
+  console.log("初始化的状态==>✨✨✨", defaultGlobalState);
   store.dispatch(setGlobalState(defaultGlobalState));
 };
 

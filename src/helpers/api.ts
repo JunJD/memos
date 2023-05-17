@@ -36,7 +36,7 @@ export function vacuumDatabase() {
 }
 
 export function signin(username: string, password: string) {
-  return memosReq.post<ResponseObject<User>>("/api/auth/signin", {
+  return memosReq.post<ResponseObject<{ user: User }>>("/api/auth/signin", {
     email: username,
     password,
   });
@@ -51,7 +51,7 @@ export function signinWithSSO(identityProviderId: IdentityProviderId, code: stri
 }
 
 export function signup(username: string, password: string) {
-  return memosReq.post<ResponseObject<User>>("/api/auth/signup", {
+  return memosReq.post<ResponseObject<{ user: User }>>("/api/auth/signup", {
     email: username,
     password,
   });
@@ -123,7 +123,8 @@ export function getMemoList(memoFind?: MemoFind) {
 }
 
 export function getMemoStats(userId: UserId) {
-  return memosReq.get<ResponseObject<number[]>>(`/api/memo/stats?creatorId=${userId}`);
+  console.log("getMemoStats", userId);
+  return memosReq.get<ResponseObject<number[]>>(`/api/memo`);
 }
 
 export function getMemoById(id: MemoId) {

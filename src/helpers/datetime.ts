@@ -115,54 +115,33 @@ export function getDateString(t?: Date | number | string, locale = i18n.language
  * - "x years ago"
  *
  */
-export const getRelativeTimeString = (time: number, locale = i18n.language, formatStyle: "long" | "short" | "narrow" = "long"): string => {
-  const pastTimeMillis = Date.now() - time;
-  const secMillis = 1000;
-  const minMillis = secMillis * 60;
-  const hourMillis = minMillis * 60;
-  const dayMillis = hourMillis * 24;
-  // Show full date if more than 1 day ago.
-  if (pastTimeMillis >= dayMillis) {
-    return new Date(time).toLocaleDateString(locale, {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    });
+// 这个函数的作用是将时间戳转换为相对时间，比如 1 分钟前，1 小时前，1 天前，1 周前，1 月前，1 年前
+export const getRelativeTimeString = (
+  time: number /* , locale = i18n.language, formatStyle: "long" | "short" | "narrow" = "long" */
+): string => {
+  const now = Date.now();
+  const diff = now - time;
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
+  if (diff < minute) {
+    return "1 minute ago";
+  } else if (diff < hour) {
+    return `${Math.floor(diff / minute)} minutes ago`;
+  } else if (diff < day) {
+    return `${Math.floor(diff / hour)} hours ago`;
+  } else if (diff < week) {
+    return `${Math.floor(diff / day)} days ago`;
+  } else if (diff < month) {
+    return `${Math.floor(diff / week)} weeks ago`;
+  } else if (diff < year) {
+    return `${Math.floor(diff / month)} months ago`;
+  } else {
+    return `${Math.floor(diff / year)} years ago`;
   }
-
-  // numeric: "auto" provides "yesterday" for 1 day ago, "always" provides "1 day ago"
-  const formatOpts = { style: formatStyle, numeric: "auto" } as Intl.RelativeTimeFormatOptions;
-
-  const relTime = new Intl.RelativeTimeFormat(locale, formatOpts);
-
-  if (pastTimeMillis < minMillis) {
-    return relTime.format(-Math.round(pastTimeMillis / secMillis), "second");
-  }
-
-  if (pastTimeMillis < hourMillis) {
-    return relTime.format(-Math.round(pastTimeMillis / minMillis), "minute");
-  }
-
-  if (pastTimeMillis < dayMillis) {
-    return relTime.format(-Math.round(pastTimeMillis / hourMillis), "hour");
-  }
-
-  if (pastTimeMillis < dayMillis * 7) {
-    return relTime.format(-Math.round(pastTimeMillis / dayMillis), "day");
-  }
-
-  if (pastTimeMillis < dayMillis * 30) {
-    return relTime.format(-Math.round(pastTimeMillis / (dayMillis * 7)), "week");
-  }
-
-  if (pastTimeMillis < dayMillis * 365) {
-    return relTime.format(-Math.round(pastTimeMillis / (dayMillis * 30)), "month");
-  }
-
-  return relTime.format(-Math.round(pastTimeMillis / (dayMillis * 365)), "year");
 };
 
 /**
