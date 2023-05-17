@@ -53,7 +53,7 @@ export const initialGlobalState = async () => {
     };
     console.log("初始化的状态1==>✨✨✨", defaultGlobalState);
     defaultGlobalState.locale = storageLocale || findNearestLanguageMatch(i18n.language);
-    defaultGlobalState.appearance = customizedProfile.appearance;
+    defaultGlobalState.appearance = "system";
   }
   console.log("初始化的状态==>✨✨✨", defaultGlobalState);
   store.dispatch(setGlobalState(defaultGlobalState));

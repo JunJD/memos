@@ -7,6 +7,7 @@ import * as api from "@/helpers/api";
 import { absolutifyLink } from "@/helpers/utils";
 import { useUserStore } from "@/store/module";
 import Icon from "@/components/Icon";
+import store from "@/store";
 
 interface State {
   loading: boolean;
@@ -37,7 +38,7 @@ const AuthCallback = () => {
               loading: false,
               errorMessage: "",
             });
-            const user = await userStore.doSignIn();
+            const user = await userStore.doSignIn(store.getState().user.user?.openId || "");
             if (user) {
               window.location.href = "/";
             } else {
@@ -61,7 +62,7 @@ const AuthCallback = () => {
   }, [searchParams]);
 
   return (
-    <div className="p-4 w-full h-full flex justify-center items-center">
+    <div className="flex items-center justify-center w-full h-full p-4">
       {state.loading ? (
         <Icon.Loader className="animate-spin dark:text-gray-200" />
       ) : (
