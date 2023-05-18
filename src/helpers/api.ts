@@ -8,7 +8,7 @@ type ResponseObject<T> = {
 };
 
 const memosReq = axios.create({
-  baseURL: "http://memosapi.dingjunjie.com",
+  baseURL: "https://memosapi.dingjunjie.com",
 });
 
 memosReq.interceptors.request.use((config) => {
