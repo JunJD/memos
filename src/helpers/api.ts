@@ -8,7 +8,7 @@ type ResponseObject<T> = {
 };
 
 const memosReq = axios.create({
-  baseURL: "http://127.0.0.1:9090",
+  baseURL: "http://memosapi.dingjunjie.com",
 });
 
 memosReq.interceptors.request.use((config) => {
